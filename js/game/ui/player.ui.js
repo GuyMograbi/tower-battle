@@ -3,4 +3,8 @@ export class PlayerUi {
         this.player = player;
         this.color = color;
     }
+
+    get id () {
+        return this.player.id;
+    }
 }

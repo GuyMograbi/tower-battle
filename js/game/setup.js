@@ -1,7 +1,9 @@
 import { RENDERER_TYPE } from 'pixi.js';
 import { Castle } from './entities/castle';
+import { Path } from './entities/path';
 import { Player } from './entities/player';
 import { CastleUi } from './ui/castle.ui';
+import { PathUi } from './ui/path.ui';
 import { PlayerUi } from './ui/player.ui';
 import { renderer, Colors } from './ui/renderer';
 import { app } from './ui/application';
@@ -47,6 +49,13 @@ const locations = [
     [1000, 600],
 ];
 
+function pathBetween(castle1, castle2) {
+    return new Path({
+        castle1: castle1,
+        castle2: castle2,
+    });
+}
+
 
 function setupCastles ({
     numberOfCastles,
@@ -74,7 +83,46 @@ function setupCastles ({
     return result;
 }
 
+// {Castle} (not CastleUi)
+function setupPaths (castles) {
+    const result = [
+        pathBetween(castles[0], castles[1]),
+        pathBetween(castles[0], castles[2]),
+        pathBetween(castles[1], castles[3]),
+        pathBetween(castles[1], castles[4]),
+        pathBetween(castles[2], castles[3]),
+        pathBetween(castles[2], castles[6]),
+        pathBetween(castles[0], castles[5]),
+        pathBetween(castles[5], castles[4]),
+        pathBetween(castles[3], castles[4]),
+        pathBetween(castles[3], castles[6]),
+        pathBetween(castles[5], castles[6]),
+        pathBetween(castles[6], castles[7]),
+        pathBetween(castles[7], castles[8]),
+        pathBetween(castles[8], castles[9]),
+        pathBetween(castles[9], castles[7]),
+        pathBetween(castles[7], castles[4]),
+        pathBetween(castles[8], castles[1]),
+        pathBetween(castles[6], castles[9]),
+    ];
+
+    for (const path of result) {
+        renderer.addPath(new PathUi({
+            castleUi1: renderer.getCastleUi(path.castle1.id),
+            castleUi2: renderer.getCastleUi(path.castle2.id),
+        }));
+    }
+
+    return result;
+}
+
+function setupCanvas () {
+    renderer.setupStage();
+}
+
 export {
     setupWindow,
-    setupCastles
+    setupCastles,
+    setupPaths,
+    setupCanvas, // TODO: use zIndex instead
 }

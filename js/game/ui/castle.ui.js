@@ -3,9 +3,14 @@ import { Colors } from './renderer';
 
 
 export class CastleUi {
-    constructor(castle, playerUi) {
+    /**
+     *
+     * @param {Castle} castle
+     * @param {PlayerUi} ownerKing
+     */
+    constructor(castle, ownerKing) {
         this.castle = castle;
-        this._playerUi = playerUi;
+        this._ownerKing = ownerKing;
         this.graphics = PainterFactory.createCircle({
             location: {
                 x: this.castle.location.x,
@@ -16,19 +21,36 @@ export class CastleUi {
         });
     }
 
+    get location () {
+        return this.castle.location;
+    }
+
+    get id () {
+        return this.castle.id;
+    }
+
     get color () {
-        return this.playerUi ?
-            this.playerUi.color :
+        return this._ownerKing ?
+            this._ownerKing.color :
             Colors.GRAY;
     }
 
+    set ownerKing (playerUi) {
+        this._ownerKing = playerUi;
+        this.graphics.color = this._ownerKing.color;
+    }
+
+    // deprecated
     set playerUi (playerUi) {
-        this._playerUi = playerUi;
-        this.graphics.color = this._playerUi.color;
+        this.ownerKing = playerUi;
+    }
+
+    isOwned () {
+        return this._ownerKing;
     }
 
     render () {
-        this.graphics.radius = this._playerUi ? this.castle.strength : 30;
+        this.graphics.radius = this.isOwned() ? this.castle.strength : 30;
         this.graphics.draw();
     }
 }
