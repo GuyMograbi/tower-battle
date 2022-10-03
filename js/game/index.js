@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { app } from './ui/application';
 import { renderer } from './ui/renderer';
 import { Gameplay } from './gameplay';
-import { setupWindow, setupCastles, setupPaths, setupCanvas } from './setup';
+import { setupWindow, setupCastles, setupPaths, setupCanvas, setupProjectilePoc } from './setup';
 
 setupWindow(window, document);
 const castles = setupCastles({
@@ -11,6 +11,7 @@ const castles = setupCastles({
 });
 setupPaths(castles);
 setupCanvas();
+setupProjectilePoc(castles);
 
 const gameplay = new Gameplay({
     castles,
@@ -22,22 +23,22 @@ app.ticker.add(() => renderer.render());
 
 // // draw graphics!
 // // https://pixijs.io/guides/basics/graphics.html
-let obj = new PIXI.Graphics();
-obj.beginFill(0xff0000);
-obj.drawRect(0, 0, 10, 50);
-obj.endFill();
+// let obj = new PIXI.Graphics();
+// obj.beginFill(0xff0000);
+// obj.drawRect(0, 0, 10, 50);
+// obj.endFill();
 
 // // Add it to the stage to render
-app.stage.addChild(obj);
+// app.stage.addChild(obj);
 // ///
 
-function changeColor () {
-    console.log('changing color');
-    // this.tint = 0x00ff00;
-    obj.beginFill(0x00ff00);
-    obj.drawRect(0, 0, 200, 100);
-    obj.endFill();
-}
+// function changeColor () {
+//     console.log('changing color');
+//     // this.tint = 0x00ff00;
+//     obj.beginFill(0x00ff00);
+//     obj.drawRect(0, 0, 200, 100);
+//     obj.endFill();
+// }
 
 // // load the texture we need
 // app.loader.add('bunny', Bunny).load((loader, resources) => {

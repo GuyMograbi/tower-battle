@@ -1,11 +1,12 @@
 import { PainterFactory } from './painter.factory';
-import { Colors } from './renderer';
+import { castles } from './ui-elements.store';
 
 
 export class PathUi {
-    constructor({castleUi1, castleUi2}) {
-        this.castleUi1 = castleUi1;
-        this.castleUi2 = castleUi2;
+    constructor({path}) {
+        this.path = path;
+        this.castleUi1 = castles.find(path.castle1);
+        this.castleUi2 = castles.find(path.castle2);
         this.graphics = PainterFactory.createLine({
                 location1: this.castleUi1.location,
                 location2: this.castleUi2.location,
@@ -17,6 +18,10 @@ export class PathUi {
         this.graphics.onClick = () => {
             console.log("clicked!!")
         }
+    }
+
+    get id () {
+        return this.path.id;
     }
 
     render () {

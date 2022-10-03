@@ -150,10 +150,10 @@ class Line {
         // this.graphics.drawPolygon( 10, 10, 120, 100, 120, 200, 70, 200);
         // this.graphics.drawPolygon(this._x1, this.angle * 5,  this._x2 - this.angle *  5, this._y2 - this.angle * 5,  this._x2 + this.angle * 5,  this._y2 + this.angle * 5, this._x1 + this.angle * 5,  this._y1 - this.angle * 5);
 
-        console.log(this._x1, this._y1, this._x2, this._y2);
-        if (this._x2 === 1000 && this._y2 === 100) {
-            debugger;
-        }
+        // console.log(this._x1, this._y1, this._x2, this._y2);
+        // if (this._x2 === 1000 && this._y2 === 100) {
+        //     debugger;
+        // }
         const dx = 6;
         const [v0, v1] = this.getPerpendicularVertices([this._x1, this._y1], this.perpendicularAngle, this.constant1, dx);
         const [v2, v3] = this.getPerpendicularVertices([this._x2, this._y2], this.perpendicularAngle, this.constant2, dx);
@@ -224,6 +224,10 @@ class Circle {
 
     set color (color) {
         this._color = color;
+    }
+
+    set location (location) {
+        this._location = location;
     }
 
     set radius (radius) {

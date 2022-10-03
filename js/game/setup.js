@@ -2,12 +2,15 @@ import { RENDERER_TYPE } from 'pixi.js';
 import { Castle } from './entities/castle';
 import { Path } from './entities/path';
 import { Player } from './entities/player';
+import { Projectile } from './entities/projectile';
 import { CastleUi } from './ui/castle.ui';
 import { PathUi } from './ui/path.ui';
 import { PlayerUi } from './ui/player.ui';
+import { castles, paths, players, projectiles } from './ui/ui-elements.store';
 import { renderer, Colors } from './ui/renderer';
 import { app } from './ui/application';
 import { Location } from './types/location';
+import {ProjectileUi} from "./ui/projectile.ui";
 
 // Resize function window
 function resize() {
@@ -76,44 +79,49 @@ function setupCastles ({
             const playerUi = new PlayerUi(player, Object.values(Colors)[i]);
             castle.ownerKing = player;
             castleUi.playerUi = playerUi;
-            renderer.addPlayer(playerUi);
+            players.add(playerUi);
         }
-        renderer.addCastle(castleUi);
+        castles.add(castleUi);
     }
     return result;
 }
 
 // {Castle} (not CastleUi)
-function setupPaths (castles) {
+function setupPaths (castlesArr) {
     const result = [
-        pathBetween(castles[0], castles[1]),
-        pathBetween(castles[0], castles[2]),
-        pathBetween(castles[1], castles[3]),
-        pathBetween(castles[1], castles[4]),
-        pathBetween(castles[2], castles[3]),
-        pathBetween(castles[2], castles[6]),
-        pathBetween(castles[0], castles[5]),
-        pathBetween(castles[5], castles[4]),
-        pathBetween(castles[3], castles[4]),
-        pathBetween(castles[3], castles[6]),
-        pathBetween(castles[5], castles[6]),
-        pathBetween(castles[6], castles[7]),
-        pathBetween(castles[7], castles[8]),
-        pathBetween(castles[8], castles[9]),
-        pathBetween(castles[9], castles[7]),
-        pathBetween(castles[7], castles[4]),
-        pathBetween(castles[8], castles[1]),
-        pathBetween(castles[6], castles[9]),
+        pathBetween(castlesArr[0], castlesArr[1]),
+        pathBetween(castlesArr[0], castlesArr[2]),
+        pathBetween(castlesArr[1], castlesArr[3]),
+        pathBetween(castlesArr[1], castlesArr[4]),
+        pathBetween(castlesArr[2], castlesArr[3]),
+        pathBetween(castlesArr[2], castlesArr[6]),
+        pathBetween(castlesArr[0], castlesArr[5]),
+        pathBetween(castlesArr[5], castlesArr[4]),
+        pathBetween(castlesArr[3], castlesArr[4]),
+        pathBetween(castlesArr[3], castlesArr[6]),
+        pathBetween(castlesArr[5], castlesArr[6]),
+        pathBetween(castlesArr[6], castlesArr[7]),
+        pathBetween(castlesArr[7], castlesArr[8]),
+        pathBetween(castlesArr[8], castlesArr[9]),
+        pathBetween(castlesArr[9], castlesArr[7]),
+        pathBetween(castlesArr[7], castlesArr[4]),
+        pathBetween(castlesArr[8], castlesArr[1]),
+        pathBetween(castlesArr[6], castlesArr[9]),
     ];
 
     for (const path of result) {
-        renderer.addPath(new PathUi({
-            castleUi1: renderer.getCastleUi(path.castle1.id),
-            castleUi2: renderer.getCastleUi(path.castle2.id),
-        }));
+        paths.add(new PathUi({path}));
     }
 
     return result;
+}
+
+function setupProjectilePoc (castles) {
+    const projectile = new Projectile({power: 10, fromCastle: castles[0], toCastle: castles[1]});
+    const projectileUi = new ProjectileUi({projectile});
+    projectiles.add(projectileUi);
+    renderer.addProjectileToStage(projectileUi);
+    projectile.startMoving();
 }
 
 function setupCanvas () {
@@ -125,4 +133,5 @@ export {
     setupCastles,
     setupPaths,
     setupCanvas, // TODO: use zIndex instead
+    setupProjectilePoc,
 }

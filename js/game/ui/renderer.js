@@ -1,4 +1,5 @@
 import { app } from './application';
+import { castles, paths, projectiles } from './ui-elements.store';
 
 const Colors = {
     BLUE: 'blue',
@@ -12,58 +13,35 @@ const Colors = {
 
 
 class Renderer {
-    constructor () {
-        this.players = [];
-        this.castles = [];
-        this.paths = [];
-    }
-
-    getPlayer (playerId) {
-        return this.players.find(p => p.id === playerId);
-    }
-
-    getCastleUi (castleId) {
-        return this.castles.find(c => c.id === castleId);
-    }
-
-    // {PlayerUi}
-    addPlayer (player) {
-        this.players.push(player);
-    }
-
-    // {CastleUi}
-    addCastle (castle) {
-        this.castles.push(castle);
-        // app.stage.addChild(castle.graphics.element);
-    }
-
-    // {PathUi}
-    addPath (path) {
-        this.paths.push(path);
-        // app.stage.addChild(path.graphics.element);
-    }
 
     // TODO: use container
     setupStage () {
-        for (const path of this.paths) {
+        console.log(`adding ${paths.all().length} paths to stage`);
+        for (const path of paths.all()) {
             app.stage.addChild(path.graphics.element);
         }
 
-        for (const castle of this.castles) {
+        console.log(`adding ${castles.all().length} castles to stage`);
+        for (const castle of castles.all()) {
             app.stage.addChild(castle.graphics.element);
         }
     }
 
+    addProjectileToStage (projectile) {
+        app.stage.addChild(projectile.graphics.element);
+    }
+
     // TODO: render container instead.
     render () {
-        for (const path of this.paths) {
+        for (const path of paths.all()) {
             path.render();
         }
-        for (const castle of this.castles) {
+        for (const castle of castles.all()) {
             castle.render();
         }
-
-
+        for (const projectile of projectiles.all()) {
+            projectile.render();
+        }
     }
 }
 
