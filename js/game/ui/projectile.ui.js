@@ -13,9 +13,21 @@ export class ProjectileUi {
         });
     }
 
+    get id () {
+        return this.projectile.id;
+    }
+
+    get exists () {
+        return this.projectile.exists;
+    }
+
+
     render () {
-        debugger;
         this.graphics.location = this.projectile.location;
         this.graphics.draw();
+    }
+
+    clear () {
+        this.graphics.clear();
     }
 }

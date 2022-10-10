@@ -7,7 +7,7 @@ class Store {
 
     constructor () {
         this.byId = {};
-        this.toBeRemoved = [];
+        // this.toBeRemoved = [];
     }
 
     add (element) {
@@ -20,6 +20,10 @@ class Store {
 
     all () {
         return Object.values(this.byId);
+    }
+
+    remove (element) {
+        delete this.byId[element.id];
     }
 }
 

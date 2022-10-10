@@ -2,7 +2,15 @@ import * as PIXI from 'pixi.js';
 import { app } from './ui/application';
 import { renderer } from './ui/renderer';
 import { Gameplay } from './gameplay';
-import { setupWindow, setupCastles, setupPaths, setupCanvas, setupProjectilePoc } from './setup';
+import {
+    setupWindow,
+    setupCastles,
+    setupPaths,
+    setupCanvas,
+    // setupProjectilePoc,
+    setupPathListeners,
+    addProjectile,
+} from './setup';
 
 setupWindow(window, document);
 const castles = setupCastles({
@@ -11,11 +19,19 @@ const castles = setupCastles({
 });
 setupPaths(castles);
 setupCanvas();
-setupProjectilePoc(castles);
+// setupProjectilePoc(castles);
 
 const gameplay = new Gameplay({
     castles,
 });
+
+setupPathListeners(({originCastle, targetCastle}) => {
+    const projectile = gameplay.fire({originCastle, targetCastle});
+    if (projectile) {
+        addProjectile(projectile);
+    }
+})
+
 
 gameplay.start();
 

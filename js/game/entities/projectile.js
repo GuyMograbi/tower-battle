@@ -19,6 +19,7 @@ export class Projectile {
         this.fromCastle = fromCastle;
         this.toCastle = toCastle;
         this.locationData = {x: fromCastle.location.x, y: fromCastle.location.y};
+        this._exists = true;
         this._id = uuidv4();
     }
 
@@ -26,9 +27,25 @@ export class Projectile {
         return this._id;
     }
 
+    get exists () {
+        return this._exists;
+    }
+
+    onHit(onHitFunction) {
+        this._onHit = onHitFunction;
+    }
+
     startMoving () {
-        debugger;
-        gsap.to(this.locationData, {ease: 'none', duration: 10, x: this.toCastle.location.x, y:this.toCastle.location.y});
+        gsap.to(this.locationData, {
+            ease: 'none',
+            duration: 3,
+            x: this.toCastle.location.x,
+            y:this.toCastle.location.y,
+            onComplete: () => {
+                this._onHit();
+                this._exists = false;
+            },
+        });
     }
 
 

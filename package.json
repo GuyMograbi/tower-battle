@@ -2,6 +2,7 @@
     "name": "castles",
     "version": "0.0.0",
     "dependencies": {
+        "event-emitter": "^0.3.5",
         "gsap": "^3.11.1",
         "pixi.js": "^6.5.1",
         "uuid": "^8.3.2"

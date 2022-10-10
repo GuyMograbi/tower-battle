@@ -4,6 +4,7 @@ export class Castle {
     constructor (location) {
         this._id = uuidv4();
         this._location = location;
+        this._strength = 30;
     }
     set strength (strength) {
         this._strength = strength;
@@ -18,7 +19,9 @@ export class Castle {
     }
 
     set ownerKing (ownerKing) {
+        debugger;
         this._ownerKing = ownerKing;
+        this._strength = 10;
     }
 
     get id () {

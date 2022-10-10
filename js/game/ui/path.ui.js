@@ -1,9 +1,13 @@
+
+
 import { PainterFactory } from './painter.factory';
+import { Location, EventEmitter, Constants } from '../types';
 import { castles } from './ui-elements.store';
 
 
-export class PathUi {
+export class PathUi extends EventEmitter {
     constructor({path}) {
+        super();
         this.path = path;
         this.castleUi1 = castles.find(path.castle1);
         this.castleUi2 = castles.find(path.castle2);
@@ -15,8 +19,15 @@ export class PathUi {
                 width: 10,
         });
 
-        this.graphics.onClick = () => {
-            console.log("clicked!!")
+        this.graphics.onClick = (clickEvent) => {
+            const eventLocation = new Location(clickEvent.data.global.x, clickEvent.data.global.y);
+
+            const distanceFrom1 = eventLocation.distanceFrom(this.castleUi1.location);
+            const distanceFrom2 = eventLocation.distanceFrom(this.castleUi2.location);
+            const [originCastle, targetCastle] = distanceFrom1 < distanceFrom2 ?
+                [this.castleUi1, this.castleUi2] :
+                [this.castleUi2, this.castleUi1];
+            this.emit(Constants.EVENT_PROJECTILE_FIRED, {originCastle, targetCastle});
         }
     }
 

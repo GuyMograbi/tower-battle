@@ -11,4 +11,8 @@ export class Location {
     get y () {
         return this._y;
     }
+
+    distanceFrom(otherLocation) {
+        return Math.sqrt(Math.pow(otherLocation.x - this.x, 2) + Math.pow(otherLocation.y - this.y, 2))
+    }
 }

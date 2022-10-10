@@ -9,7 +9,7 @@ import { PlayerUi } from './ui/player.ui';
 import { castles, paths, players, projectiles } from './ui/ui-elements.store';
 import { renderer, Colors } from './ui/renderer';
 import { app } from './ui/application';
-import { Location } from './types/location';
+import { Location, Constants } from './types';
 import {ProjectileUi} from "./ui/projectile.ui";
 
 // Resize function window
@@ -70,7 +70,7 @@ function setupCastles ({
 
         const castle = new Castle(new Location(...location));
 
-        castle.strength = 10;
+        // castle.strength = 10;
         result.push(castle);
         const castleUi = new CastleUi(castle);
 
@@ -115,17 +115,35 @@ function setupPaths (castlesArr) {
 
     return result;
 }
+//
+// function setupProjectilePoc (castles) {
+//     const projectile = new Projectile({power: 10, fromCastle: castles[0], toCastle: castles[1]});
+//     const projectileUi = new ProjectileUi({projectile});
+//     projectiles.add(projectileUi);
+//     renderer.addProjectileToStage(projectileUi);
+//     projectile.startMoving();
+// }
 
-function setupProjectilePoc (castles) {
-    const projectile = new Projectile({power: 10, fromCastle: castles[0], toCastle: castles[1]});
+function addProjectile (projectile) {
     const projectileUi = new ProjectileUi({projectile});
     projectiles.add(projectileUi);
     renderer.addProjectileToStage(projectileUi);
-    projectile.startMoving();
 }
 
 function setupCanvas () {
     renderer.setupStage();
+}
+
+function setupPathListeners (func) {
+    for (const path of paths.all()) {
+        path.on(Constants.EVENT_PROJECTILE_FIRED, ({ originCastle, targetCastle}) => {
+            // translate from ui to entities
+            func({
+                originCastle: originCastle.castle,
+                targetCastle: targetCastle.castle,
+            })
+        });
+    }
 }
 
 export {
@@ -133,5 +151,7 @@ export {
     setupCastles,
     setupPaths,
     setupCanvas, // TODO: use zIndex instead
-    setupProjectilePoc,
+    // setupProjectilePoc,
+    setupPathListeners,
+    addProjectile,
 }

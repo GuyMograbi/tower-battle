@@ -1,5 +1,6 @@
 import { PainterFactory } from './painter.factory';
 import { Colors } from './renderer';
+import { players } from './ui-elements.store';
 
 
 export class CastleUi {
@@ -8,17 +9,20 @@ export class CastleUi {
      * @param {Castle} castle
      * @param {PlayerUi} ownerKing
      */
-    constructor(castle, ownerKing) {
-        this.castle = castle;
-        this._ownerKing = ownerKing;
+    constructor(castle) {
+        this._castle = castle;
         this.graphics = PainterFactory.createCircle({
             location: {
-                x: this.castle.location.x,
-                y: this.castle.location.y,
+                x: this._castle.location.x,
+                y: this._castle.location.y,
             },
-            radius: this.castle.strength,
+            radius: this._castle.strength,
             color: this.color,
         });
+    }
+
+    get castle () {
+        return this._castle;
     }
 
     get location () {
@@ -30,8 +34,8 @@ export class CastleUi {
     }
 
     get color () {
-        return this._ownerKing ?
-            this._ownerKing.color :
+        return this.castle.ownerKing ?
+            players.find({id: this.castle.ownerKing.id}).color :
             Colors.GRAY;
     }
 
@@ -50,7 +54,8 @@ export class CastleUi {
     }
 
     render () {
-        this.graphics.radius = this.isOwned() ? this.castle.strength : 30;
+        this.graphics.color = this.color;
+        this.graphics.radius = this.castle.strength;
         this.graphics.draw();
     }
 }

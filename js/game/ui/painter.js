@@ -24,9 +24,6 @@ class Line {
         this.drawn = false;
 
         this.graphics = new PIXI.Graphics();
-        this.graphics.interactive = true;
-        this.graphics.buttonMode = true;
-        this.graphics.on('pointerdown', () => console.log('test'));
         console.log('adding interactive test');
     }
 
@@ -39,9 +36,9 @@ class Line {
     }
 
     set onClick (func) {
-        // this.graphics.interactive = true;
-        // this.graphics.buttonMode = true;
-        // this.graphics.on('pointerdown', func);
+        this.graphics.interactive = true;
+        this.graphics.buttonMode = true;
+        this.graphics.on('pointerdown', func);
     }
 
     // m = y2 - y1 / x2 - x1
@@ -242,6 +239,10 @@ class Circle {
         this.graphics.beginFill(ColorToHex[this._color]);
         this.graphics.drawCircle(this._location.x, this._location.y, this._radius);
         this.graphics.endFill();
+    }
+
+    clear () {
+        this.graphics.clear();
     }
 
     get element () {

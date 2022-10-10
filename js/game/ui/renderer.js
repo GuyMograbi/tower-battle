@@ -40,7 +40,12 @@ class Renderer {
             castle.render();
         }
         for (const projectile of projectiles.all()) {
-            projectile.render();
+            if (projectile.exists) {
+                projectile.render();
+            } else {
+                projectile.clear();
+                projectiles.remove(projectile);
+            }
         }
     }
 }
